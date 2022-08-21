@@ -1,2 +1,56 @@
-# dude-install.sh
-The Dude Client for Mikrotik installer on Linux.
+<div align="center">
+  <h3 style="font-size: xx-large;"> dude-install.sh </h3>
+  <hr>
+  <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Ubuntu.</p>
+  <hr>
+</div>
+
+## ✅ Support
+
+- Ubuntu 22.04 (jammy)
+- Ubuntu 21.10 (impish)
+- Ubuntu 20.04 (focal)
+- Ubuntu 18.04 (bionic)
+
+## ⬇️ Installing
++ **For Linux :**
+```
+git clone https://github.com/danielcshn/dude-install.sh.git
+cd dude-install.sh
+chmod +x dude-install.sh
+./dude-install.sh
+```
+
+---
+
+## 📝 License
+
+```
+MIT License
+
+Copyright (c) 2022 danielcshn
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## 📧 Contact
+
+- Project Link: [https://github.com/danielcshn/dude-install.sh](https://github.com/danielcshn/dude-install.sh)
