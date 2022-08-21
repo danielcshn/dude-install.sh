@@ -23,13 +23,28 @@ chmod +x dude-install.sh
 
 ## 🛠️ Usage
 
-1.- Select the `Check Dependencies` option to verify that you meet the required system and dependencies.
+1. Select the `Check Dependencies` option to verify that you meet the required system and dependencies.
 
-2.- Select the `Install The Dude Client` option. Then indicate the version to install. Example: `7.1` or `7.5beta11`.
+2. Select the `Install The Dude Client` option. Then indicate the version to install. Example: `7.1` or `7.5beta11`.
 
-3.- Select the `Launch The Dude Client` option to start the program.
+3. Select the `Launch The Dude Client` option to start the program.
 
 ![](https://img.shields.io/badge/⚠%20WARNING:%20This%20Script%20comes%20with%20ABSOLUTELY%20NO%20WARRANTY!%20-red?style=for-the-badge)<br>
+
+---
+
+## 🤝 Contributing
+
+We currently accept contributions to this repository.<br>Follow the steps below to make a contribution to the digital tool:
+
+1. Fork the repository.
+2. Develop the new functionality or make the changes that you think add value to the tool
+3. Make a "pull request" documenting in detail the proposed changes in the repository.
+
+**If you haven't contributed to the repository, but found the tool useful, we'd love to hear about your experience. Tell us about your experience in an Issue.**
+
+#### Attributions
+Tell us in the "pull request" your username and organization to add it to the list of contributions in the Readme.md.
 
 ---
 
