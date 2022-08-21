@@ -32,7 +32,9 @@ chmod +x dude-install.sh
 
 3. Select the `Launch The Dude Client` option to start the program.
 
-![](https://img.shields.io/badge/⚠%20WARNING:%20This%20Script%20comes%20with%20ABSOLUTELY%20NO%20WARRANTY!%20-red?style=for-the-badge)<br>
+<p align="center">
+  <img src="https://img.shields.io/badge/%E2%9A%A0%20WARNING:%20This%20Script%20comes%20with%20ABSOLUTELY%20NO%20WARRANTY!%20-red?style=for-the-badge" title="Warning">
+</p>
 
 ---
 
