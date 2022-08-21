@@ -123,8 +123,12 @@ launchDude() {
 }
 
 dudeDownload() {
-  wget https://download.mikrotik.com/routeros/7.4.1/dude-install-7.4.1.exe
-  wine dude-install-7.4.1.exe &
+
+  printf "${White}┌─[${Green}DudeInstaller${White}] Please indicate the version of The Dude Client you want to install:\n"
+  read -p "└──►$(tput setaf 7) " verdude
+
+  wget https://download.mikrotik.com/routeros/$verdude/dude-install-$verdude.exe
+  wine dude-install-$verdude.exe &
   # Wait until Wine initializes
   while : ; do
       printf "Waiting for Wine to initialize..."
@@ -161,7 +165,7 @@ banner() {
        CCCC   LLLLLL  IIIIII  EEEEEE  NN  NN    TT        "
   printf "${Yellow}\n\n A simple installer of The Dude Client for Linux!\n"
   printf "${Green}\n Developed by: danielcshn ( https://github.com/danielcshn )"
-  printf "${Green}\n Version: 0.3\n"
+  printf "${Green}\n Version: 0.4\n"
 }
 
 ##### Display available options #####
