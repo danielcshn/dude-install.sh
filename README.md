@@ -4,6 +4,9 @@
   <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Ubuntu.</p>
   <hr>
 </div>
+<p align="center">
+  <img src="https://github.com/danielcshn/dude-install.sh/raw/main/imgs/dude-installer_scrs1.png" title="dude-install.sh">
+</p>
 
 ## ✅ Support
 
