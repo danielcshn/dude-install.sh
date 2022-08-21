@@ -21,6 +21,16 @@ chmod +x dude-install.sh
 ./dude-install.sh
 ```
 
+## 🛠️ Usage
+
+1.- Select the `Check Dependencies` option to verify that you meet the required system and dependencies.
+
+2.- Select the `Install The Dude Client` option. Then indicate the version to install. Example: `7.1` or `7.5beta11`.
+
+3.- Select the `Launch The Dude Client` option to start the program.
+
+![](https://img.shields.io/badge/⚠%20WARNING:%20This%20Script%20comes%20with%20ABSOLUTELY%20NO%20WARRANTY!%20-red?style=for-the-badge)<br>
+
 ---
 
 ## 📝 License
