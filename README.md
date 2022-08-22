@@ -26,7 +26,7 @@
 - Ubuntu 22.04 (Jammy Jellyfish)
 - Ubuntu 21.10 (Impish Indri)
 - Ubuntu 20.04 (Focal Fossa)
-- Ubuntu 18.04 (bionic)
+- Ubuntu 18.04 (Bionic Beaver)
 
 ## ⬇️ Installing
 + **For Linux :**
