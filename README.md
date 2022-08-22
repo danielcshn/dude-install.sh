@@ -4,6 +4,19 @@
   <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Ubuntu.</p>
   <hr>
 </div>
+
+<div align="center">
+  
+[![GitHub issues](https://img.shields.io/bitbucket/issues/danielcshn/dude-install.sh?style=for-the-badge)](https://github.com/danielcshn/dude-install.sh/issues)
+[![GitHub watchers](https://img.shields.io/github/watchers/danielcshn/dude-install.sh?style=for-the-badge)](https://github.com/danielcshn/dude-install.sh/watchers)
+[![GitHub forks](https://img.shields.io/github/forks/danielcshn/dude-install.sh?style=for-the-badge)](https://github.com/danielcshn/dude-install.sh/fork)
+[![GitHub stars](https://img.shields.io/github/stars/danielcshn/dude-install.sh?style=for-the-badge)](https://github.com/danielcshn/dude-install.sh/stargazers)
+[![License](https://img.shields.io/github/license/danielcshn/dude-install.sh?style=for-the-badge)](https://github.com/danielcshn/dude-install.sh/blob/main/LICENSE)
+[![Language](https://img.shields.io/github/languages/top/danielcshn/dude-install.sh?style=for-the-badge)](https://github.com/danielcshn/dude-install.sh/search?l=shell)
+[![GitHub last commit](https://img.shields.io/github/last-commit/danielcshn/dude-install.sh?style=for-the-badge)](https://github.com/danielcshn/dude-install.sh/commits/main)
+
+</div>
+
 <p align="center">
   <img src="https://github.com/danielcshn/dude-install.sh/raw/main/imgs/dude-installer_scrs1.png" title="dude-install.sh">
 </p>
