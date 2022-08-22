@@ -49,6 +49,14 @@ chmod +x dude-install.sh
   <img src="https://img.shields.io/badge/%E2%9A%A0%20WARNING:%20This%20Script%20comes%20with%20ABSOLUTELY%20NO%20WARRANTY!%20-red?style=for-the-badge" title="Warning">
 </p>
 
+## 🧪 Tested distros
+
+<div align="center">
+
+[![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/)
+
+</div>
+
 ---
 
 ## 🤝 Contributing
