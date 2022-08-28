@@ -23,6 +23,8 @@
 
 ## ✅ Support
 
+- Debian 11 (Bullseye)
+- Debian 10 (Buster)
 - Ubuntu 22.04 (Jammy Jellyfish)
 - Ubuntu 21.10 (Impish Indri)
 - Ubuntu 20.04 (Focal Fossa)
@@ -54,7 +56,7 @@ chmod +x dude-install.sh
 
 <div align="center">
 
-[![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Linux Lite 6.0 (Ubuntu 22.04 LTD)](https://img.shields.io/badge/Linux%20Lite-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://www.linuxliteos.com/)
+[![Debian 11](https://img.shields.io/badge/Debian%2011-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://www.debian.org/) [![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Linux Lite 6.0 (Ubuntu 22.04 LTD)](https://img.shields.io/badge/Linux%20Lite-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://www.linuxliteos.com/)
 
 </div>
 
