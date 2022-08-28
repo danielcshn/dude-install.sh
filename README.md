@@ -1,7 +1,7 @@
 <div align="center">
   <h3 style="font-size: xx-large;"> dude-install.sh </h3>
   <hr>
-  <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Ubuntu.</p>
+  <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Debian, Ubuntu and Linux Lite.</p>
   <hr>
 </div>
 
