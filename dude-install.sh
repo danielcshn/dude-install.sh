@@ -34,6 +34,148 @@ function checkRoot() {
   fi
 }
 
+##### Support Install Linux Mint 21 (vanessa) < TESTED OK
+function installLinuxMint21(){
+  osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    printf "[${Red}Status${White}] Found missing dependencies...\n\n"
+    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
+
+    dpkg --add-architecture i386
+
+    file1=/usr/share/keyrings/winehq-archive.key
+    if ! [ -f "$file1" ]; then
+      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+    fi
+
+    file2=/etc/apt/sources.list.d/winehq-bullseye.sources
+    if ! [ -f "$file2" ]; then
+      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+    fi
+
+    # At this time (August 7, 2022), Wine Stable remains unavailable.
+    # https://wine.htmlvalidator.com/install-wine-on-ubuntu-22.04.html
+    printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
+    sudo apt-get update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
+    winever="$(wine --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
+
+    ## Tools
+    printf "[${Green}Status${White}] Installing xdotool...\n"
+    sudo apt-get install xdotool -y > /dev/null
+    xdotver="$(xdotool --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
+
+    printf "[${Green}Status${White}] Installing winetricks...\n"
+    sudo apt-get install winetricks -y > /dev/null
+    witrver="$(winetricks --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
+
+    printf "[${Green}Status${White}] Installing dotnet45...\n"
+    winetricks dotnet45 -f -q > /dev/null
+
+    printf "[${Green}Status${White}] Installing successful.\n\n"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
+##### Support Install Linux Mint 20 (ulyana) < NOT TESTED
+function installLinuxMint20(){
+  osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    printf "[${Red}Status${White}] Found missing dependencies...\n\n"
+    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
+
+    dpkg --add-architecture i386
+
+    file1=/usr/share/keyrings/winehq-archive.key
+    if ! [ -f "$file1" ]; then
+      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+    fi
+
+    file2=/etc/apt/sources.list.d/winehq-focal.sources
+    if ! [ -f "$file2" ]; then
+      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
+    fi
+
+    # At this time (August 7, 2022), Wine Stable remains unavailable. 
+    printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
+    sudo apt-get update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
+    winever="$(wine --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
+
+    ## Tools
+    printf "[${Green}Status${White}] Installing xdotool...\n"
+    sudo apt-get install xdotool -y > /dev/null
+    xdotver="$(xdotool --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
+
+    printf "[${Green}Status${White}] Installing winetricks...\n"
+    sudo apt-get install winetricks -y > /dev/null
+    witrver="$(winetricks --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
+
+    printf "[${Green}Status${White}] Installing dotnet45...\n"
+    winetricks dotnet45 -f -q > /dev/null
+
+    printf "[${Green}Status${White}] Installing successful.\n\n"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
+##### Support Install Linux Mint 19 (tara) < NOT TESTED
+function installLinuxMint19(){
+  osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    printf "[${Red}Status${White}] Found missing dependencies...\n\n"
+    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
+
+    dpkg --add-architecture i386
+
+    file1=/usr/share/keyrings/winehq-archive.key
+    if ! [ -f "$file1" ]; then
+      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+    fi
+
+    file2=/etc/apt/sources.list.d/winehq-bionic.sources
+    if ! [ -f "$file2" ]; then
+      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/bionic/winehq-bionic.sources
+    fi
+
+    # At this time (August 7, 2022), Wine Stable remains unavailable. 
+    printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
+    sudo apt-get update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
+    winever="$(wine --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
+
+    ## Tools
+    printf "[${Green}Status${White}] Installing xdotool...\n"
+    sudo apt-get install xdotool -y > /dev/null
+    xdotver="$(xdotool --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
+
+    printf "[${Green}Status${White}] Installing winetricks...\n"
+    sudo apt-get install winetricks -y > /dev/null
+    witrver="$(winetricks --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
+
+    printf "[${Green}Status${White}] Installing dotnet45...\n"
+    winetricks dotnet45 -f -q > /dev/null
+
+    printf "[${Green}Status${White}] Installing successful.\n\n"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
 ##### Support Install Ubuntu 22.04 (bullseye) < TESTED OK
 function intallUbuntu2204(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
@@ -351,6 +493,8 @@ function checkDependencies() {
     esac
   fi
 
+  ## Ubuntu
+
   if [ $(lsb_release -is) = "Ubuntu" ]; then
     case $(lsb_release -rs) in 
       22.04)
@@ -368,6 +512,28 @@ function checkDependencies() {
       18.04)
         Compatible=true
         intallUbuntu1804
+        ;;
+      *)
+        Compatible=false
+        ;;
+    esac
+  fi
+
+  ## LinuxMint
+
+  if [ $(lsb_release -is) = "Linuxmint" ]; then
+    case $(lsb_release -rs) in 
+      21)
+        Compatible=true
+        installLinuxMint21
+        ;;
+      20)
+        Compatible=true
+        installLinuxMint20
+        ;;
+      19)
+        Compatible=true
+        installLinuxMint19
         ;;
       *)
         Compatible=false
@@ -434,7 +600,7 @@ function banner() {
        CCCC   LLLLLL  IIIIII  EEEEEE  NN  NN    TT        "
   printf "${Yellow}\n\n A simple installer of The Dude Client for Linux!\n"
   printf "${Green}\n Developed by: danielcshn ( https://github.com/danielcshn )"
-  printf "${Green}\n Version: 0.5\n"
+  printf "${Green}\n Version: 0.6\n"
 }
 
 ##### Display available options #####
