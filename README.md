@@ -1,7 +1,7 @@
 <div align="center">
   <h3 style="font-size: xx-large;"> dude-install.sh </h3>
   <hr>
-  <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Debian, Ubuntu and Linux Lite.</p>
+  <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Debian, Ubuntu, Linux Lite & Linux Mint.</p>
   <hr>
 </div>
 
@@ -30,6 +30,9 @@
 - Ubuntu 20.04 (Focal Fossa)
 - Ubuntu 18.04 (Bionic Beaver)
 - Linux Lite 6.0 (Based on Ubuntu 22.04)
+- Linux Mint 21 (Vanessa)
+- Linux Mint 20 (Ulyana)
+- Link Mint 19 (Tara)
 
 ## ⬇️ Installing
 + **For Linux :**
@@ -56,7 +59,7 @@ chmod +x dude-install.sh
 
 <div align="center">
 
-[![Debian 11](https://img.shields.io/badge/Debian%2011-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://www.debian.org/) [![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Linux Lite 6.0 (Ubuntu 22.04 LTD)](https://img.shields.io/badge/Linux%20Lite-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://www.linuxliteos.com/)
+[![Debian 11](https://img.shields.io/badge/Debian%2011-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/) [![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu%2022.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Linux Lite 6.0 (Ubuntu 22.04 LTD)](https://img.shields.io/badge/Linux%20Lite%206.0-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://linuxliteos.com/) [![Linux Mint 21](https://img.shields.io/badge/Linux%20Mint%2021-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/)
 
 </div>
 
