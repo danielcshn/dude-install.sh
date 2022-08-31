@@ -318,7 +318,7 @@ function intallUbuntu2004(){
   fi
 }
 
-##### Support Install Ubuntu 18.04 (bionic) < NOT TESTED
+##### Support Install Ubuntu 18.04.6 (bionic) < TESTED OK
 function intallUbuntu1804(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
