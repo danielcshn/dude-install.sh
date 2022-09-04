@@ -34,6 +34,53 @@ function checkRoot() {
   fi
 }
 
+##### Support Install Zorin OS 16 (focal) < TESTED OK
+function installZorinOS16(){
+  osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    printf "[${Red}Status${White}] Found missing dependencies...\n\n"
+    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
+
+    dpkg --add-architecture i386
+
+    file1=/usr/share/keyrings/winehq-archive.key
+    if ! [ -f "$file1" ]; then
+      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+    fi
+
+    file2=/etc/apt/sources.list.d/winehq-focal.sources
+    if ! [ -f "$file2" ]; then
+      sudo wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
+    fi
+
+    # At this time (August 7, 2022), Wine Stable remains unavailable. 
+    printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
+    sudo apt-get update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
+    winever="$(wine --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
+
+    ## Tools
+    printf "[${Green}Status${White}] Installing xdotool...\n"
+    sudo apt-get install xdotool -y > /dev/null
+    xdotver="$(xdotool --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
+
+    printf "[${Green}Status${White}] Installing winetricks...\n"
+    sudo apt-get install winetricks -y > /dev/null
+    witrver="$(winetricks --version)"
+    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
+
+    printf "[${Green}Status${White}] Installing dotnet45...\n"
+    winetricks dotnet45 -f -q > /dev/null
+
+    printf "[${Green}Status${White}] Installing successful.\n\n"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
 ##### Support Install Linux Mint 21 (vanessa) < TESTED OK
 function installLinuxMint21(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
@@ -535,6 +582,20 @@ function checkDependencies() {
       19)
         Compatible=true
         installLinuxMint19
+        ;;
+      *)
+        Compatible=false
+        ;;
+    esac
+  fi
+
+  ## Zorin OS
+
+  if [ $(lsb_release -is | awk '{print tolower($0)}') = "zorin" ]; then
+    case $(lsb_release -rs) in 
+      16)
+        Compatible=true
+        installZorinOS16
         ;;
       *)
         Compatible=false
