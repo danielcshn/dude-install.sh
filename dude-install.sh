@@ -29,7 +29,7 @@ Compatible=false
 function checkRoot() {
   if ! [ $(id -u) = 0 ]; then
   banner
-  printf "\n\n${White}[${Red}DudeInstaller${White}] Please run the tool as root or use sudo.\n\n\n"
+  printf "\n\n${White}[${Red}DudeInstaller${White}] Please run the tool as root or use: sudo ./dude-install.sh \n\n\n"
   exit 1
   fi
 }
@@ -82,7 +82,7 @@ function installLinuxMint21(){
   fi
 }
 
-##### Support Install Linux Mint 20 (ulyana) < NOT TESTED
+##### Support Install Linux Mint 20 (ulyana) < TESTED OK
 function installLinuxMint20(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
@@ -129,7 +129,7 @@ function installLinuxMint20(){
   fi
 }
 
-##### Support Install Linux Mint 19 (tara) < NOT TESTED
+##### Support Install Linux Mint 19 (tara) < TESTED OK
 function installLinuxMint19(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
@@ -152,7 +152,8 @@ function installLinuxMint19(){
 
     # At this time (August 7, 2022), Wine Stable remains unavailable. 
     printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
-    sudo apt-get update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
+    sudo apt-get update > /dev/null
+    sudo apt install --install-recommends winehq-devel -y > /dev/null
     winever="$(wine --version)"
     printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
 
@@ -271,7 +272,7 @@ function intallUbuntu2110(){
   fi
 }
 
-##### Support Install Ubuntu 20.04 (focal) < NOT TESTED
+##### Support Install Ubuntu 20.04 (focal) < TESTED OK
 function intallUbuntu2004(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
@@ -521,7 +522,7 @@ function checkDependencies() {
 
   ## LinuxMint
 
-  if [ $(lsb_release -is) = "Linuxmint" ]; then
+  if [ $(lsb_release -is | awk '{print tolower($0)}') = "linuxmint" ]; then
     case $(lsb_release -rs) in 
       21)
         Compatible=true
@@ -544,7 +545,7 @@ function checkDependencies() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
 
   if ! $Compatible; then
-    printf "Non-compatible version - $osversion.\n\n"
+    printf "[${Yellow}Alert${White}] Non-compatible version - $osversion.\n\n"
   fi
 }
 
@@ -600,7 +601,7 @@ function banner() {
        CCCC   LLLLLL  IIIIII  EEEEEE  NN  NN    TT        "
   printf "${Yellow}\n\n A simple installer of The Dude Client for Linux!\n"
   printf "${Green}\n Developed by: danielcshn ( https://github.com/danielcshn )"
-  printf "${Green}\n Version: 0.6\n"
+  printf "${Green}\n Version: 0.7\n"
 }
 
 ##### Display available options #####
