@@ -622,7 +622,7 @@ function launchDude() {
 function dudeDownload() {
 
   printf "${White}┌─[${Green}DudeInstaller${White}] Please indicate the version of The Dude Client\n"
-  printf "${White}| you want to install:\n"
+  printf "${White}│ you want to install (Example: ${Purple}7.5${White}):\n"
   read -p "└──►$(tput setaf 7) " verdude
 
   wget https://download.mikrotik.com/routeros/$verdude/dude-install-$verdude.exe
@@ -677,22 +677,22 @@ function menu() {
   printf "${Green}┌─[${Red}Select Option${Green}]──[${Red}~${Green}]─[${Yellow}Menu${Green}]:\n"
   read -p "└──►$(tput setaf 7) " option
   case $option in
-    1) printf "\n[${Green}Selected${White}] Option 1 Check Dependencies...\n"
+    1) printf "\n[${Green}Selected${White}] Option 1 Check Dependencies...\n\n"
        checkDependencies
        ;;
-    2) printf "\n[${Green}Selected${White}] Option 2 The Dude Client...\n"
+    2) printf "\n[${Green}Selected${White}] Option 2 The Dude Client...\n\n"
        dudeDownload
        clear
        banner
        menu
        ;;
-    3) printf "\n[${Green}Selected${White}] Option 3 Launch The Dude Client...\n"
+    3) printf "\n[${Green}Selected${White}] Option 3 Launch The Dude Client...\n\n"
        launchDude
        ;;
-    4) printf "${Red}\nThank You for using the script ${White}:)\n"
+    4) printf "${Red}\nThank You for using the script ${White}:)\n\n"
        exit 0
        ;;
-    *) printf "${White}[${Red}Error${White}] Please select correct option...\n"
+    *) printf "${White}[${Red}Error${White}] Please select correct option...\n\n"
        ;;
   esac
   done
