@@ -225,7 +225,7 @@ function installLinuxMint19(){
 }
 
 ##### Support Install Ubuntu 22.04 (bullseye) < TESTED OK
-function intallUbuntu2204(){
+function installUbuntu2204(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -273,7 +273,7 @@ function intallUbuntu2204(){
 }
 
 ##### Support Install Ubuntu 21.10 (impish) < NOT TESTED
-function intallUbuntu2110(){
+function installUbuntu2110(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -320,7 +320,7 @@ function intallUbuntu2110(){
 }
 
 ##### Support Install Ubuntu 20.04 (focal) < TESTED OK
-function intallUbuntu2004(){
+function installUbuntu2004(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -367,7 +367,7 @@ function intallUbuntu2004(){
 }
 
 ##### Support Install Ubuntu 18.04.6 (bionic) < TESTED OK
-function intallUbuntu1804(){
+function installUbuntu1804(){
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -414,7 +414,7 @@ function intallUbuntu1804(){
 }
 
 ##### Support Install Debian GNU/Linux 11 (bullseye) < TESTED OK
-function intallDebian11() {
+function installDebian11() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -467,7 +467,7 @@ function intallDebian11() {
 }
 
 ##### Support Install Debian GNU/Linux 10 (buster) < NOT TESTED
-function intallDebian10() {
+function installDebian10() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -529,11 +529,11 @@ function checkDependencies() {
     case $(lsb_release -rs) in 
       11)
         Compatible=true
-        intallDebian11
+        installDebian11
         ;;
       10)
         Compatible=true
-        intallDebian10
+        installDebian10
         ;;
       *)
         Compatible=false
@@ -547,19 +547,19 @@ function checkDependencies() {
     case $(lsb_release -rs) in 
       22.04)
         Compatible=true
-        intallUbuntu2204
+        installUbuntu2204
         ;;
       21.10)
         Compatible=true
-        intallUbuntu2110
+        installUbuntu2110
         ;;
       20.04)
         Compatible=true
-        intallUbuntu2004
+        installUbuntu2004
         ;;
       18.04)
         Compatible=true
-        intallUbuntu1804
+        installUbuntu1804
         ;;
       *)
         Compatible=false
@@ -621,7 +621,8 @@ function launchDude() {
 
 function dudeDownload() {
 
-  printf "${White}┌─[${Green}DudeInstaller${White}] Please indicate the version of The Dude Client you want to install:\n"
+  printf "${White}┌─[${Green}DudeInstaller${White}] Please indicate the version of The Dude Client\n"
+  printf "${White}| you want to install:\n"
   read -p "└──►$(tput setaf 7) " verdude
 
   wget https://download.mikrotik.com/routeros/$verdude/dude-install-$verdude.exe
