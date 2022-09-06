@@ -35,7 +35,7 @@ function checkRoot() {
 }
 
 ##### Support Install Zorin OS 16 (focal) < TESTED OK
-function installZorinOS16(){
+function installZorinOS16() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -82,7 +82,7 @@ function installZorinOS16(){
 }
 
 ##### Support Install Linux Mint 21 (vanessa) < TESTED OK
-function installLinuxMint21(){
+function installLinuxMint21() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -130,7 +130,7 @@ function installLinuxMint21(){
 }
 
 ##### Support Install Linux Mint 20 (ulyana) < TESTED OK
-function installLinuxMint20(){
+function installLinuxMint20() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -177,7 +177,7 @@ function installLinuxMint20(){
 }
 
 ##### Support Install Linux Mint 19 (tara) < TESTED OK
-function installLinuxMint19(){
+function installLinuxMint19() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -225,7 +225,7 @@ function installLinuxMint19(){
 }
 
 ##### Support Install Ubuntu 22.04 (bullseye) < TESTED OK
-function installUbuntu2204(){
+function installUbuntu2204() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -273,7 +273,7 @@ function installUbuntu2204(){
 }
 
 ##### Support Install Ubuntu 21.10 (impish) < NOT TESTED
-function installUbuntu2110(){
+function installUbuntu2110() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -320,7 +320,7 @@ function installUbuntu2110(){
 }
 
 ##### Support Install Ubuntu 20.04 (focal) < TESTED OK
-function installUbuntu2004(){
+function installUbuntu2004() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
@@ -367,7 +367,7 @@ function installUbuntu2004(){
 }
 
 ##### Support Install Ubuntu 18.04.6 (bionic) < TESTED OK
-function installUbuntu1804(){
+function installUbuntu1804() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
