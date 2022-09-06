@@ -47,12 +47,12 @@ function installZorinOS16(){
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-focal.sources
     if ! [ -f "$file2" ]; then
-      sudo wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
     fi
 
     # At this time (August 7, 2022), Wine Stable remains unavailable. 
@@ -94,12 +94,12 @@ function installLinuxMint21(){
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-bullseye.sources
     if ! [ -f "$file2" ]; then
-      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
     fi
 
     # At this time (August 7, 2022), Wine Stable remains unavailable.
@@ -142,12 +142,12 @@ function installLinuxMint20(){
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-focal.sources
     if ! [ -f "$file2" ]; then
-      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
     fi
 
     # At this time (August 7, 2022), Wine Stable remains unavailable. 
@@ -189,12 +189,12 @@ function installLinuxMint19(){
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-bionic.sources
     if ! [ -f "$file2" ]; then
-      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/bionic/winehq-bionic.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/bionic/winehq-bionic.sources
     fi
 
     # At this time (August 7, 2022), Wine Stable remains unavailable. 
@@ -237,12 +237,12 @@ function installUbuntu2204(){
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-bullseye.sources
     if ! [ -f "$file2" ]; then
-      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
     fi
 
     # At this time (August 7, 2022), Wine Stable remains unavailable.
@@ -285,12 +285,12 @@ function installUbuntu2110(){
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-impish.sources
     if ! [ -f "$file2" ]; then
-      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/impish/winehq-impish.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/impish/winehq-impish.sources
     fi
 
     # At this time (August 7, 2022), Wine Stable remains unavailable. 
@@ -332,12 +332,12 @@ function installUbuntu2004(){
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-focal.sources
     if ! [ -f "$file2" ]; then
-      sudo wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
     fi
 
     # At this time (August 7, 2022), Wine Stable remains unavailable. 
@@ -379,12 +379,12 @@ function installUbuntu1804(){
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-bionic.sources
     if ! [ -f "$file2" ]; then
-      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/bionic/winehq-bionic.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/bionic/winehq-bionic.sources
     fi
 
     # At this time (August 7, 2022), Wine Stable remains unavailable. 
@@ -431,12 +431,12 @@ function installDebian11() {
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-bullseye.sources
     if ! [ -f "$file2" ]; then
-      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources
     fi
 
     # sudo apt update && apt install --install-recommends wine wine32 winetricks xdotool -y > /dev/null
@@ -484,12 +484,12 @@ function installDebian10() {
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
-      wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
     fi
 
     file2=/etc/apt/sources.list.d/winehq-buster.sources
     if ! [ -f "$file2" ]; then
-      wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/buster/winehq-buster.sources
+      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/buster/winehq-buster.sources
     fi
 
     # sudo apt update && apt install --install-recommends wine wine32 winetricks xdotool -y > /dev/null
@@ -625,7 +625,7 @@ function dudeDownload() {
   printf "${White}│ you want to install (Example: ${Purple}7.5${White}):\n"
   read -p "└──►$(tput setaf 7) " verdude
 
-  wget https://download.mikrotik.com/routeros/$verdude/dude-install-$verdude.exe
+  wget -q https://download.mikrotik.com/routeros/$verdude/dude-install-$verdude.exe
   wine dude-install-$verdude.exe &
   # Wait until Wine initializes
   while : ; do
