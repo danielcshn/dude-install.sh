@@ -25,15 +25,23 @@
 
 - Debian 11 (Bullseye)
 - Debian 10 (Buster)
+- Ubuntu 24.04 (Noble Numbat) - BETA
+- Ubuntu 23.10 (Mantic Minotaur)
+- Ubuntu 23.04 (Lunar Lobster)
 - Ubuntu 22.04 (Jammy Jellyfish)
 - Ubuntu 21.10 (Impish Indri)
 - Ubuntu 20.04 (Focal Fossa)
-- Ubuntu 18.04 (Bionic Beaver)
-- Linux Lite 6.0 (Based on Ubuntu 22.04)
+- Linux Lite 6.X (Based on Ubuntu 22.04.3)
 - Linux Mint 21 (Vanessa)
 - Linux Mint 20 (Ulyana)
 - Linux Mint 19 (Tara)
 - Zorin OS 16.1 (Focal)
+
+## ✅ Support EOL
+
+- Ubuntu 18.04 (Bionic Beaver) 
+
+`EOL - End-of-Life:` No security updates, no script support.
 
 ## ⬇️ Installing
 + **For Linux :**

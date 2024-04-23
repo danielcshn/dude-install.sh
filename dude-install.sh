@@ -6,7 +6,9 @@
 # Autor: danielcshn                                                            #
 # URL: https://github.com/danielcshn                                           #
 # ============================================================================ #
-# Copyright (c) 2022 danielcshn                                                #
+# Version: v0.8 (20240423)                                                     #
+# ============================================================================ #
+# Copyright (c) 2022-2024 danielcshn                                           #
 # ============================================================================ #
 #
 # This Script comes with ABSOLUTELY NO WARRANTY!
@@ -224,196 +226,144 @@ function installLinuxMint19() {
   fi
 }
 
-##### Support Install Ubuntu 22.04 (bullseye) < TESTED OK
+##### Support Install Wine & Tools
+##### UBUNTU: https://wiki.winehq.org/Ubuntu
+
+function installWineAndTools() {
+  printf "[${Red}Status${White}] Found missing dependencies...\n\n"
+  printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
+
+  dpkg --add-architecture i386
+
+  file1=/etc/apt/keyrings/winehq-archive.key
+  if ! [ -f "$file1" ]; then
+    mkdir -pm755 /etc/apt/keyrings > /dev/null
+    wget -q -nc -P /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key > /dev/null
+  fi
+
+  local version=$1
+  local codename=$2
+
+  file2=/etc/apt/sources.list.d/winehq-$codename.sources
+  if ! [ -f "$file2" ]; then
+    wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$codename/winehq-$codename.sources
+  fi
+
+  printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
+  apt-get update > /dev/null && apt install --install-recommends winehq-devel -y > /dev/null
+  winever="$(wine --version)"
+  printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
+
+  ## Tools
+  printf "[${Green}Status${White}] Installing xdotool...\n"
+  apt-get install xdotool -y > /dev/null
+  xdotver="$(xdotool --version)"
+  printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
+
+  printf "[${Green}Status${White}] Installing winetricks...\n"
+  apt-get install winetricks -y > /dev/null
+  witrver="$(winetricks --version)"
+  printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
+
+  printf "[${Green}Status${White}] Installing dotnet45...\n"
+  winetricks dotnet45 -f -q > /dev/null
+
+  printf "[${Green}Status${White}] Installing successful.\n\n"
+}
+
+##### Support: Ubuntu 24.04 (Noble Numbat) Beta
+
+function installUbuntu2404() {
+  osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    installWineAndTools "23.10" "mantic"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
+##### Support: Ubuntu 23.10 (Mantic Minotaur)
+
+function installUbuntu2310() {
+  osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    installWineAndTools "23.10" "mantic"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
+##### Support: Ubuntu 23.04 (Lunar Lobster)
+
+function installUbuntu2304() {
+  osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    installWineAndTools "23.04" "lunar"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
+##### Support: Ubuntu 22.04 (Jammy Jellyfish)
+
 function installUbuntu2204() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
   if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
-    printf "[${Red}Status${White}] Found missing dependencies...\n\n"
-    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
-
-    dpkg --add-architecture i386
-
-    file1=/usr/share/keyrings/winehq-archive.key
-    if ! [ -f "$file1" ]; then
-      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-    fi
-
-    file2=/etc/apt/sources.list.d/winehq-bullseye.sources
-    if ! [ -f "$file2" ]; then
-      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
-    fi
-
-    # At this time (August 7, 2022), Wine Stable remains unavailable.
-    # https://wine.htmlvalidator.com/install-wine-on-ubuntu-22.04.html
-    printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
-    sudo apt-get update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
-    winever="$(wine --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
-
-    ## Tools
-    printf "[${Green}Status${White}] Installing xdotool...\n"
-    sudo apt-get install xdotool -y > /dev/null
-    xdotver="$(xdotool --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing winetricks...\n"
-    sudo apt-get install winetricks -y > /dev/null
-    witrver="$(winetricks --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing dotnet45...\n"
-    winetricks dotnet45 -f -q > /dev/null
-
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    installWineAndTools "22.04" "jammy"
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
 }
 
-##### Support Install Ubuntu 21.10 (impish) < NOT TESTED
+##### Support: Ubuntu 21.10 (Impish Indri)
+
 function installUbuntu2110() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
   if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
-    printf "[${Red}Status${White}] Found missing dependencies...\n\n"
-    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
-
-    dpkg --add-architecture i386
-
-    file1=/usr/share/keyrings/winehq-archive.key
-    if ! [ -f "$file1" ]; then
-      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-    fi
-
-    file2=/etc/apt/sources.list.d/winehq-impish.sources
-    if ! [ -f "$file2" ]; then
-      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/impish/winehq-impish.sources
-    fi
-
-    # At this time (August 7, 2022), Wine Stable remains unavailable. 
-    printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
-    sudo apt-get update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
-    winever="$(wine --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
-
-    ## Tools
-    printf "[${Green}Status${White}] Installing xdotool...\n"
-    sudo apt-get install xdotool -y > /dev/null
-    xdotver="$(xdotool --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing winetricks...\n"
-    sudo apt-get install winetricks -y > /dev/null
-    witrver="$(winetricks --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing dotnet45...\n"
-    winetricks dotnet45 -f -q > /dev/null
-
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    installWineAndTools "21.10" "impish"
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
 }
 
-##### Support Install Ubuntu 20.04 (focal) < TESTED OK
+##### Support: Ubuntu 20.04 (Focal Fossa)
+
 function installUbuntu2004() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
   if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
-    printf "[${Red}Status${White}] Found missing dependencies...\n\n"
-    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
-
-    dpkg --add-architecture i386
-
-    file1=/usr/share/keyrings/winehq-archive.key
-    if ! [ -f "$file1" ]; then
-      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-    fi
-
-    file2=/etc/apt/sources.list.d/winehq-focal.sources
-    if ! [ -f "$file2" ]; then
-      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/focal/winehq-focal.sources
-    fi
-
-    # At this time (August 7, 2022), Wine Stable remains unavailable. 
-    printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
-    sudo apt-get update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
-    winever="$(wine --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
-
-    ## Tools
-    printf "[${Green}Status${White}] Installing xdotool...\n"
-    sudo apt-get install xdotool -y > /dev/null
-    xdotver="$(xdotool --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing winetricks...\n"
-    sudo apt-get install winetricks -y > /dev/null
-    witrver="$(winetricks --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing dotnet45...\n"
-    winetricks dotnet45 -f -q > /dev/null
-
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    installWineAndTools "20.04" "focal"
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
 }
 
-##### Support Install Ubuntu 18.04.6 (bionic) < TESTED OK
+##### Support: Ubuntu 18.04 (Bionic Beaver)
+
 function installUbuntu1804() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
 
   if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
-    printf "[${Red}Status${White}] Found missing dependencies...\n\n"
-    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
-
-    dpkg --add-architecture i386
-
-    file1=/usr/share/keyrings/winehq-archive.key
-    if ! [ -f "$file1" ]; then
-      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-    fi
-
-    file2=/etc/apt/sources.list.d/winehq-bionic.sources
-    if ! [ -f "$file2" ]; then
-      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/bionic/winehq-bionic.sources
-    fi
-
-    # At this time (August 7, 2022), Wine Stable remains unavailable. 
-    printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
-    sudo apt-get update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
-    winever="$(wine --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
-
-    ## Tools
-    printf "[${Green}Status${White}] Installing xdotool...\n"
-    sudo apt-get install xdotool -y > /dev/null
-    xdotver="$(xdotool --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing winetricks...\n"
-    sudo apt-get install winetricks -y > /dev/null
-    witrver="$(winetricks --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing dotnet45...\n"
-    winetricks dotnet45 -f -q > /dev/null
-
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    installWineAndTools "18.04" "bionic"
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
 }
 
 ##### Support Install Debian GNU/Linux 11 (bullseye) < TESTED OK
+
 function installDebian11() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
@@ -425,9 +375,9 @@ function installDebian11() {
     dpkg --add-architecture i386
 
     ## Enable contrib & non-free sources list.
-    sudo sed -i 's/bullseye main/bullseye main contrib non-free/g' /etc/apt/sources.list
-    sudo sed -i 's/bullseye-security main/bullseye-security main contrib non-free/g' /etc/apt/sources.list
-    sudo sed -i 's/bullseye-updates main/bullseye-updates main contrib non-free/g' /etc/apt/sources.list
+    sed -i 's/bullseye main/bullseye main contrib non-free/g' /etc/apt/sources.list
+    sed -i 's/bullseye-security main/bullseye-security main contrib non-free/g' /etc/apt/sources.list
+    sed -i 's/bullseye-updates main/bullseye-updates main contrib non-free/g' /etc/apt/sources.list
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
@@ -439,20 +389,20 @@ function installDebian11() {
       wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources
     fi
 
-    # sudo apt update && apt install --install-recommends wine wine32 winetricks xdotool -y > /dev/null
+    # apt update && apt install --install-recommends wine wine32 winetricks xdotool -y > /dev/null
     printf "[${Green}Status${White}] Installing WineHQ (Stable)...\n"
-    sudo apt-get update > /dev/null && apt-get install --install-recommends winehq-stable -y > /dev/null
+    apt-get update > /dev/null && apt-get install --install-recommends winehq-stable -y > /dev/null
     winever="$(wine --version)"
     printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
 
     ## Tools
     printf "[${Green}Status${White}] Installing xdotool...\n"
-    sudo apt-get install xdotool -y > /dev/null
+    apt-get install xdotool -y > /dev/null
     xdotver="$(xdotool --version)"
     printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
 
     printf "[${Green}Status${White}] Installing winetricks...\n"
-    sudo apt-get install winetricks -y > /dev/null
+    apt-get install winetricks -y > /dev/null
     witrver="$(winetricks --version)"
     printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
 
@@ -467,6 +417,7 @@ function installDebian11() {
 }
 
 ##### Support Install Debian GNU/Linux 10 (buster) < NOT TESTED
+
 function installDebian10() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
   printf "[${Green}Status${White}] $osversion... compatible.\n\n"
@@ -478,9 +429,9 @@ function installDebian10() {
     dpkg --add-architecture i386
 
     ## Enable contrib & non-free sources list.
-    sudo sed -i 's/buster main/buster main contrib non-free/g' /etc/apt/sources.list
-    sudo sed -i 's/buster-security main/buster-security main contrib non-free/g' /etc/apt/sources.list
-    sudo sed -i 's/buster-updates main/buster-updates main contrib non-free/g' /etc/apt/sources.list
+    sed -i 's/buster main/buster main contrib non-free/g' /etc/apt/sources.list
+    sed -i 's/buster-security main/buster-security main contrib non-free/g' /etc/apt/sources.list
+    sed -i 's/buster-updates main/buster-updates main contrib non-free/g' /etc/apt/sources.list
 
     file1=/usr/share/keyrings/winehq-archive.key
     if ! [ -f "$file1" ]; then
@@ -492,20 +443,20 @@ function installDebian10() {
       wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/buster/winehq-buster.sources
     fi
 
-    # sudo apt update && apt install --install-recommends wine wine32 winetricks xdotool -y > /dev/null
+    # apt update && apt install --install-recommends wine wine32 winetricks xdotool -y > /dev/null
     printf "[${Green}Status${White}] Installing WineHQ (Stable)...\n"
-    sudo apt-get update > /dev/null && apt-get install --install-recommends winehq-stable -y > /dev/null
+    apt-get update > /dev/null && apt-get install --install-recommends winehq-stable -y > /dev/null
     winever="$(wine --version)"
     printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
 
     ## Tools
     printf "[${Green}Status${White}] Installing xdotool...\n"
-    sudo apt-get install xdotool -y > /dev/null
+    apt-get install xdotool -y > /dev/null
     xdotver="$(xdotool --version)"
     printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
 
     printf "[${Green}Status${White}] Installing winetricks...\n"
-    sudo apt-get install winetricks -y > /dev/null
+    apt-get install winetricks -y > /dev/null
     witrver="$(winetricks --version)"
     printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
 
@@ -520,6 +471,7 @@ function installDebian10() {
 }
 
 ##### Check if winehq is installed or not #####
+
 function checkDependencies() {
   checkRoot
 
@@ -545,6 +497,18 @@ function checkDependencies() {
 
   if [ $(lsb_release -is) = "Ubuntu" ]; then
     case $(lsb_release -rs) in 
+      24.04)
+        Compatible=true
+        installUbuntu2404
+        ;;
+      23.10)
+        Compatible=true
+        installUbuntu2310
+        ;;
+      23.04)
+        Compatible=true
+        installUbuntu2304
+        ;;
       22.04)
         Compatible=true
         installUbuntu2204
@@ -622,14 +586,14 @@ function launchDude() {
 function dudeDownload() {
 
   printf "${White}┌─[${Green}DudeInstaller${White}] Please indicate the version of The Dude Client\n"
-  printf "${White}│ you want to install (Example: ${Purple}7.5${White}):\n"
+  printf "${White}│ you want to install (Example: ${Purple}7.14.3${White}):\n"
   read -p "└──►$(tput setaf 7) " verdude
 
   wget -q https://download.mikrotik.com/routeros/$verdude/dude-install-$verdude.exe
   wine dude-install-$verdude.exe &
   # Wait until Wine initializes
   while : ; do
-      printf "Waiting for Wine to initialize..."
+      printf "Waiting for Wine to initialize... This process is automatic."
       sleep 2
       set +e  # Fix for: https://github.com/jordansissel/xdotool/issues/60
       WINDOW_ID=$(xdotool search --name "The Dude Setup")
@@ -663,7 +627,7 @@ function banner() {
        CCCC   LLLLLL  IIIIII  EEEEEE  NN  NN    TT        "
   printf "${Yellow}\n\n A simple installer of The Dude Client for Linux!\n"
   printf "${Green}\n Developed by: danielcshn ( https://github.com/danielcshn )"
-  printf "${Green}\n Version: 0.7\n"
+  printf "${Green}\n Version: 0.8 (20240423)\n"
 }
 
 ##### Display available options #####
