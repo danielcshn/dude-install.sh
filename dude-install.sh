@@ -6,7 +6,7 @@
 # Autor: danielcshn                                                            #
 # URL: https://github.com/danielcshn                                           #
 # ============================================================================ #
-# Version: v0.8 (20240423)                                                     #
+# Version: v0.9 (20240424)                                                     #
 # ============================================================================ #
 # Copyright (c) 2022-2024 danielcshn                                           #
 # ============================================================================ #
@@ -77,7 +77,7 @@ function installZorinOS16() {
     printf "[${Green}Status${White}] Installing dotnet45...\n"
     winetricks dotnet45 -f -q > /dev/null
 
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    printf "[${Green}Status${White}] Installing successful. Exit root mode, option 4 to exit.\n\n"
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
@@ -125,7 +125,7 @@ function installLinuxMint21() {
     printf "[${Green}Status${White}] Installing dotnet45...\n"
     winetricks dotnet45 -f -q > /dev/null
 
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    printf "[${Green}Status${White}] Installing successful. Exit root mode, option 4 to exit.\n\n"
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
@@ -172,7 +172,7 @@ function installLinuxMint20() {
     printf "[${Green}Status${White}] Installing dotnet45...\n"
     winetricks dotnet45 -f -q > /dev/null
 
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    printf "[${Green}Status${White}] Installing successful. Exit root mode, option 4 to exit.\n\n"
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
@@ -220,13 +220,13 @@ function installLinuxMint19() {
     printf "[${Green}Status${White}] Installing dotnet45...\n"
     winetricks dotnet45 -f -q > /dev/null
 
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    printf "[${Green}Status${White}] Installing successful. Exit root mode, option 4 to exit.\n\n"
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
 }
 
-##### Support Install Wine & Tools
+##### Support Install Wine & Tools Ubuntu
 ##### UBUNTU: https://wiki.winehq.org/Ubuntu
 
 function installWineAndTools() {
@@ -268,7 +268,7 @@ function installWineAndTools() {
   printf "[${Green}Status${White}] Installing dotnet45...\n"
   winetricks dotnet45 -f -q > /dev/null
 
-  printf "[${Green}Status${White}] Installing successful.\n\n"
+  printf "[${Green}Status${White}] Installing successful. Exit root mode, option 4 to exit.\n\n"
 }
 
 ##### Support: Ubuntu 24.04 (Noble Numbat) Beta
@@ -362,7 +362,73 @@ function installUbuntu1804() {
   fi
 }
 
-##### Support Install Debian GNU/Linux 11 (bullseye) < TESTED OK
+##### Support Install Wine & Tools Debian
+##### Debian: https://wiki.winehq.org/Debian
+
+function installCommonPackages() {
+  printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
+
+  sudo dpkg --add-architecture i386
+
+  ## Enable contrib & non-free sources list.
+  sudo sed -i 's/$1 main/$1 main contrib non-free/g' /etc/apt/sources.list
+  sudo sed -i 's/$2 main/$2 main contrib non-free/g' /etc/apt/sources.list
+  sudo sed -i 's/$3 main/$3 main contrib non-free/g' /etc/apt/sources.list
+
+  file1=/etc/apt/keyrings/winehq-archive.key
+  if ! [ -f "$file1" ]; then
+    sudo mkdir -pm755 /etc/apt/keyrings
+    sudo wget -q -nc -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+  fi
+
+  file2=/etc/apt/sources.list.d/winehq-$1.sources
+  if ! [ -f "$file2" ]; then
+    sudo wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/$1/winehq-$1.sources
+  fi
+
+  printf "[${Green}Status${White}] Installing WineHQ (Developed)...\n"
+  sudo apt update > /dev/null && sudo apt install --install-recommends winehq-devel -y > /dev/null
+  winever="$(wine --version)"
+  printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
+
+  ## Tools
+  printf "[${Green}Status${White}] Installing xdotool...\n"
+  sudo apt install xdotool -y > /dev/null
+  xdotver="$(xdotool --version)"
+  printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
+
+  printf "[${Green}Status${White}] Installing winetricks...\n"
+
+  sudo wget -q ${HOME}/Downloads https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
+  sudo chmod +x winetricks > /dev/null
+  sudo cp winetricks /usr/local/bin > /dev/null
+
+  # sudo apt install winetricks -y > /dev/null
+  witrver="$(winetricks --version)"
+  printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
+
+  printf "[${Green}Status${White}] Installing dotnet45...\n"
+  sudo winetricks --self-update
+  winetricks dotnet45 -f -q > /dev/null
+
+  printf "[${Green}Status${White}] Installing successful. Exit root mode, option 4 to exit.\n\n"
+}
+
+##### Support Debian GNU/Linux 12 (Bookworm) < TESTED OK 24/04/2024
+
+function installDebian12() {
+  osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    printf "[${Red}Status${White}] Found missing dependencies...\n\n"
+    installCommonPackages bookworm bookworm-security bookworm-updates
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
+##### Support Debian GNU/Linux 11 (Bullseye) < TESTED OK 24/04/2024
 
 function installDebian11() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
@@ -370,53 +436,13 @@ function installDebian11() {
 
   if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
     printf "[${Red}Status${White}] Found missing dependencies...\n\n"
-    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
-
-    dpkg --add-architecture i386
-
-    ## Enable contrib & non-free sources list.
-    sed -i 's/bullseye main/bullseye main contrib non-free/g' /etc/apt/sources.list
-    sed -i 's/bullseye-security main/bullseye-security main contrib non-free/g' /etc/apt/sources.list
-    sed -i 's/bullseye-updates main/bullseye-updates main contrib non-free/g' /etc/apt/sources.list
-
-    file1=/usr/share/keyrings/winehq-archive.key
-    if ! [ -f "$file1" ]; then
-      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-    fi
-
-    file2=/etc/apt/sources.list.d/winehq-bullseye.sources
-    if ! [ -f "$file2" ]; then
-      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bullseye/winehq-bullseye.sources
-    fi
-
-    # apt update && apt install --install-recommends wine wine32 winetricks xdotool -y > /dev/null
-    printf "[${Green}Status${White}] Installing WineHQ (Stable)...\n"
-    apt-get update > /dev/null && apt-get install --install-recommends winehq-stable -y > /dev/null
-    winever="$(wine --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
-
-    ## Tools
-    printf "[${Green}Status${White}] Installing xdotool...\n"
-    apt-get install xdotool -y > /dev/null
-    xdotver="$(xdotool --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing winetricks...\n"
-    apt-get install winetricks -y > /dev/null
-    witrver="$(winetricks --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing dotnet45...\n"
-    winetricks dotnet45 -f -q > /dev/null
-
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    installCommonPackages bullseye bullseye-security bullseye-updates
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
-
 }
 
-##### Support Install Debian GNU/Linux 10 (buster) < NOT TESTED
+##### Support Debian GNU/Linux 10 (Buster) < TESTED OK 24/04/2024
 
 function installDebian10() {
   osversion="$(( lsb_release -ds || cat /etc/*release || uname -om ) 2>/dev/null | head -n1)"
@@ -424,50 +450,10 @@ function installDebian10() {
 
   if [ $(dpkg-query -W -f='${Status}' winetricks 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
     printf "[${Red}Status${White}] Found missing dependencies...\n\n"
-    printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
-
-    dpkg --add-architecture i386
-
-    ## Enable contrib & non-free sources list.
-    sed -i 's/buster main/buster main contrib non-free/g' /etc/apt/sources.list
-    sed -i 's/buster-security main/buster-security main contrib non-free/g' /etc/apt/sources.list
-    sed -i 's/buster-updates main/buster-updates main contrib non-free/g' /etc/apt/sources.list
-
-    file1=/usr/share/keyrings/winehq-archive.key
-    if ! [ -f "$file1" ]; then
-      wget -q -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-    fi
-
-    file2=/etc/apt/sources.list.d/winehq-buster.sources
-    if ! [ -f "$file2" ]; then
-      wget -q -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/buster/winehq-buster.sources
-    fi
-
-    # apt update && apt install --install-recommends wine wine32 winetricks xdotool -y > /dev/null
-    printf "[${Green}Status${White}] Installing WineHQ (Stable)...\n"
-    apt-get update > /dev/null && apt-get install --install-recommends winehq-stable -y > /dev/null
-    winever="$(wine --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
-
-    ## Tools
-    printf "[${Green}Status${White}] Installing xdotool...\n"
-    apt-get install xdotool -y > /dev/null
-    xdotver="$(xdotool --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing winetricks...\n"
-    apt-get install winetricks -y > /dev/null
-    witrver="$(winetricks --version)"
-    printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
-
-    printf "[${Green}Status${White}] Installing dotnet45...\n"
-    winetricks dotnet45 -f -q > /dev/null
-
-    printf "[${Green}Status${White}] Installing successful.\n\n"
+    installCommonPackages buster buster-security buster-updates
   else
     printf "[${Green}Status${White}] All dependencies are installed.\n\n"
   fi
-
 }
 
 ##### Check if winehq is installed or not #####
@@ -475,10 +461,14 @@ function installDebian10() {
 function checkDependencies() {
   checkRoot
 
-  ## Debian GNU/Linux 11 (bullseye)
+  ## Debian GNU/Linux
 
   if [ $(lsb_release -is) = "Debian" ]; then
     case $(lsb_release -rs) in 
+      12)
+        Compatible=true
+        installDebian12
+        ;;
       11)
         Compatible=true
         installDebian11
@@ -627,7 +617,7 @@ function banner() {
        CCCC   LLLLLL  IIIIII  EEEEEE  NN  NN    TT        "
   printf "${Yellow}\n\n A simple installer of The Dude Client for Linux!\n"
   printf "${Green}\n Developed by: danielcshn ( https://github.com/danielcshn )"
-  printf "${Green}\n Version: 0.8 (20240423)\n"
+  printf "${Green}\n Version: 0.9 (20240424)\n"
 }
 
 ##### Display available options #####
