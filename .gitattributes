@@ -1,0 +1,5 @@
+* text=auto
+
+# Shell scripts must keep LF line endings so the shebang works on Linux.
+*.sh text eol=lf
+*.md text eol=lf

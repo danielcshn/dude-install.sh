@@ -1,7 +1,7 @@
 <div align="center">
   <h3 style="font-size: xx-large;"> dude-install.sh </h3>
   <hr>
-  <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Debian, Ubuntu, Linux Lite & Linux Mint.</p>
+  <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Debian, Ubuntu, Linux Lite, Linux Mint & LMDE.</p>
   <hr>
 </div>
 
@@ -23,19 +23,25 @@
 
 ## ✅ Support
 
+- Debian 13 (Trixie)
 - Debian 12 (Bookworm)
 - Debian 11 (Bullseye)
-- Ubuntu 24.04 (Noble Numbat) - BETA
+- LMDE 7 (Gigi)
+- LMDE 6 (Faye)
+- Ubuntu 24.04 (Noble Numbat)
 - Ubuntu 23.10 (Mantic Minotaur)
 - Ubuntu 23.04 (Lunar Lobster)
 - Ubuntu 22.04 (Jammy Jellyfish)
 - Ubuntu 21.10 (Impish Indri)
 - Ubuntu 20.04 (Focal Fossa)
 - Linux Lite 6.X (Based on Ubuntu 22.04.3)
+- Linux Mint 22 (Wilma)
 - Linux Mint 21 (Vanessa)
 - Linux Mint 20 (Ulyana)
 - Linux Mint 19 (Tara)
 - Zorin OS 16.1 (Focal)
+
+> The distribution is detected from `/etc/os-release`, so `lsb-release` is no longer required. This is important on Debian 13 and LMDE 7, where it is not installed by default.
 
 ## ✅ Support EOL
 
@@ -55,10 +61,28 @@ chmod +x dude-install.sh
 ```
 
 + **For Debian :**
+
+Debian does not always grant `sudo` to the first user. You can add your user to the `sudo` group:
+
+```
+su
+apt install git sudo
+usermod -aG sudo your_user
+exit
+# log out and log back in so the new group is applied
+git clone https://github.com/danielcshn/dude-install.sh.git
+cd dude-install.sh
+chmod +x dude-install.sh
+./dude-install.sh
+```
+
+> If your user still cannot use `sudo`, the script stops and prints these instructions. It does not ask for the root password with `su`, because that would install The Dude Client in root's Wine profile instead of yours.
+
+Or run the whole script as root. In that case The Dude Client will be installed in root's Wine profile:
+
 ```
 su
 apt install git
-exit
 git clone https://github.com/danielcshn/dude-install.sh.git
 cd dude-install.sh
 chmod +x dude-install.sh
@@ -69,9 +93,13 @@ chmod +x dude-install.sh
 
 1. Select the `Check Dependencies` option to verify that you meet the required system and dependencies.
 
+   > The first time, `winetricks` creates the Wine prefix and sets up Wine Mono and .NET Framework 4.5 (it installs .NET 4.0 first). This can take several minutes and opens a few installers. It only happens once: later checks report `dotnet45 is already installed`.
+
 2. Select the `Install The Dude Client` option. Then indicate the version to install. Example: `7.1` or `7.5beta11`.
 
 3. Select the `Launch The Dude Client` option to start the program.
+
+> If your terminal uses a light theme and some text is hard to read, run `NO_COLOR=1 ./dude-install.sh` to disable colours.
 
 <p align="center">
   <img src="https://img.shields.io/badge/%E2%9A%A0%20WARNING:%20This%20Script%20comes%20with%20ABSOLUTELY%20NO%20WARRANTY!%20-red?style=for-the-badge" title="Warning">
@@ -81,7 +109,7 @@ chmod +x dude-install.sh
 
 <div align="center">
 
-[![Debian 12](https://img.shields.io/badge/Debian%2012-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/) [![Debian 11](https://img.shields.io/badge/Debian%2011-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/) [![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu%2022.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Ubuntu 20.04](https://img.shields.io/badge/Ubuntu%2020.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Ubuntu 18.04.6](https://img.shields.io/badge/Ubuntu%2018.04.6-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Linux Lite 6.0 (Ubuntu 22.04 LTD)](https://img.shields.io/badge/Linux%20Lite%206.0-%E2%9C%85-blue?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAABACAYAAADrnQxhAAAAAXNSR0IArs4c6QAAA2ZJREFUWEfdmE1o1FAQx/+TbbXJUizVVovibouXIr2JJxG9elQU736cvBTEg2ho4xeC4EUPghSvguDRs4gHr6IiSOmuSIWt1R7KRts1I4mb7dtsXjKb/RDca2bf781//m8yL4Qu/bjkvAOwh4r2Lt2S1A0WlxwO16GirV2zI5gKUTetA2aC6SAK8DkV7ZNR1dqGCUABIy47MUwKSZIzFcblGzUw5zIZyTDO0v5rTxvm0S3Cn26PYbBWyQRR/qTKGZtZFsmSNhUCO4a5Y7MwV+4nC1DzdtOBuUrHMKnMfnZ9gwXHIbozLs8vgmlKsmN37BLMlQeS0L9nrwWm9Lm0VdzxyzAr99LCwucLHcFgbAO8DREstmZi29MAwDURKGxfmTNrU8IfVLRHm2C8NP8GRIcl220HFnuoxRICcMdnYVZSDnN91x3BvMEJGJtfJQL4MUxF22ixvjSzLBL+OxiXnFUAoxJtOs5MKqG/GSksOho0rC+FSUFxc8j/AdNOV1xyvLg3QJxZpDImwRrjc5ob+wb7NXIGgIfta8+S90R0mgrXW4ICg3TbiYmzft9gvOjMIIe3abUSH2YPr2nKPhK3XijjGoAdaUCJOUT3M4mUXYNJjCKAValo53UKkZ+RmrouQ86N4OfO84mjW5KEQa+Muw/HAf0zxoaFoe9PtKVNhcXJ5/8pCvQlHPr2EOS53YVl6YlpWTXGgn44cQtWvmmDvfmkcyZwYvD3rpwzKSwJKH5TtwPTAXsGS5xButRBmsquna4kMHHnZ7yiSfto1HDNtxjBrXNz+Bhq5iFt2xK5sZ7ZBwDTkleNH9NyxWWsgDAEIqvpqxDhMRXsCx1dBo2NUtI8shr90JkZpqufWEapSVSZW84fD0zT5NWP2rEg+kDTKxfA9BnEc83+ziH4pNT6iWKBivY5NTb1E2AYzCXHnwNPad4IXwDssyxrq0ksOY9AuAjCOhXs4UYjTnMfl5xlABNhXFiXugLBNbZarfpTNVuWFVxpxTKqgYqky1S090afqYbwgcx8Ip/Pv2gbFlw4CDNUsN+31LXs3MG6d4sOzq2rz3ygKmemmsWZSGdzHVBskLS6NsnLbLiu+zuaYU9gPrhard4FcEUF9gxWB3pEdNw0zZdi67cjYTRWrV9PMwvBIbAvsLqk/Ac3JuDvT1hXxQAAAABJRU5ErkJggg==)](https://linuxliteos.com/) [![Linux Mint 21](https://img.shields.io/badge/Linux%20Mint%2021-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Linux Mint 20](https://img.shields.io/badge/Linux%20Mint%2020-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Linux Mint 19](https://img.shields.io/badge/Linux%20Mint%2019-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Zorin OS 16](https://img.shields.io/badge/Zorin%20OS%2016-%E2%9C%85-blue?style=for-the-badge&logo=zorin)](https://zorin.com/os/)
+[![Debian 13](https://img.shields.io/badge/Debian%2012-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/) [![Debian 12](https://img.shields.io/badge/Debian%2012-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/) [![Debian 11](https://img.shields.io/badge/Debian%2011-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/) [![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu%2022.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Ubuntu 20.04](https://img.shields.io/badge/Ubuntu%2020.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Ubuntu 18.04.6](https://img.shields.io/badge/Ubuntu%2018.04.6-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Linux Lite 6.0 (Ubuntu 22.04 LTD)](https://img.shields.io/badge/Linux%20Lite%206.0-%E2%9C%85-blue?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAABACAYAAADrnQxhAAAAAXNSR0IArs4c6QAAA2ZJREFUWEfdmE1o1FAQx/+TbbXJUizVVovibouXIr2JJxG9elQU736cvBTEg2ho4xeC4EUPghSvguDRs4gHr6IiSOmuSIWt1R7KRts1I4mb7dtsXjKb/RDca2bf781//m8yL4Qu/bjkvAOwh4r2Lt2S1A0WlxwO16GirV2zI5gKUTetA2aC6SAK8DkV7ZNR1dqGCUABIy47MUwKSZIzFcblGzUw5zIZyTDO0v5rTxvm0S3Cn26PYbBWyQRR/qTKGZtZFsmSNhUCO4a5Y7MwV+4nC1DzdtOBuUrHMKnMfnZ9gwXHIbozLs8vgmlKsmN37BLMlQeS0L9nrwWm9Lm0VdzxyzAr99LCwucLHcFgbAO8DREstmZi29MAwDURKGxfmTNrU8IfVLRHm2C8NP8GRIcl220HFnuoxRICcMdnYVZSDnN91x3BvMEJGJtfJQL4MUxF22ixvjSzLBL+OxiXnFUAoxJtOs5MKqG/GSksOho0rC+FSUFxc8j/AdNOV1xyvLg3QJxZpDImwRrjc5ob+wb7NXIGgIfta8+S90R0mgrXW4ICg3TbiYmzft9gvOjMIIe3abUSH2YPr2nKPhK3XijjGoAdaUCJOUT3M4mUXYNJjCKAValo53UKkZ+RmrouQ86N4OfO84mjW5KEQa+Muw/HAf0zxoaFoe9PtKVNhcXJ5/8pCvQlHPr2EOS53YVl6YlpWTXGgn44cQtWvmmDvfmkcyZwYvD3rpwzKSwJKH5TtwPTAXsGS5xButRBmsquna4kMHHnZ7yiSfto1HDNtxjBrXNz+Bhq5iFt2xK5sZ7ZBwDTkleNH9NyxWWsgDAEIqvpqxDhMRXsCx1dBo2NUtI8shr90JkZpqufWEapSVSZW84fD0zT5NWP2rEg+kDTKxfA9BnEc83+ziH4pNT6iWKBivY5NTb1E2AYzCXHnwNPad4IXwDssyxrq0ksOY9AuAjCOhXs4UYjTnMfl5xlABNhXFiXugLBNbZarfpTNVuWFVxpxTKqgYqky1S090afqYbwgcx8Ip/Pv2gbFlw4CDNUsN+31LXs3MG6d4sOzq2rz3ygKmemmsWZSGdzHVBskLS6NsnLbLiu+zuaYU9gPrhard4FcEUF9gxWB3pEdNw0zZdi67cjYTRWrV9PMwvBIbAvsLqk/Ac3JuDvT1hXxQAAAABJRU5ErkJggg==)](https://linuxliteos.com/) [![LMDE 7](https://img.shields.io/badge/Linux%20Mint%2021-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Linux Mint 21](https://img.shields.io/badge/Linux%20Mint%2021-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Linux Mint 20](https://img.shields.io/badge/Linux%20Mint%2020-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Linux Mint 19](https://img.shields.io/badge/Linux%20Mint%2019-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Zorin OS 16](https://img.shields.io/badge/Zorin%20OS%2016-%E2%9C%85-blue?style=for-the-badge&logo=zorin)](https://zorin.com/os/)
 
 </div>
 
