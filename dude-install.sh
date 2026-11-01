@@ -6,7 +6,7 @@
 # Autor: danielcshn                                                            #
 # URL: https://github.com/danielcshn                                           #
 # ============================================================================ #
-# Version: v1.0 (20261031)                                                     #
+# Version: v1.1 (20261101)                                                     #
 # ============================================================================ #
 # Copyright (c) 2022-2026 danielcshn                                           #
 # ============================================================================ #
@@ -262,12 +262,6 @@ function installWineAndTools() {
   winever="$(wine --version)"
   printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
 
-  ## Tools
-  printf "[${Green}Status${White}] Installing xdotool...\n"
-  $SUDO apt-get install xdotool -y > /dev/null
-  xdotver="$(xdotool --version)"
-  printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
-
   printf "[${Green}Status${White}] Installing cabextract...\n"
   $SUDO apt-get install cabextract -y > /dev/null
 
@@ -279,6 +273,19 @@ function installWineAndTools() {
   installDotnet
 
   printf "[${Green}Status${White}] Installing successful. Select option 2 to install The Dude Client.\n\n"
+}
+
+##### Support: Ubuntu 26.04 (Resolute Raccoon)
+
+function installUbuntu2604() {
+  osversion="$OS_PRETTY"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if ! command -v winetricks > /dev/null 2>&1; then
+    installWineAndTools "26.04" "resolute"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
 }
 
 ##### Support: Ubuntu 24.04 (Noble Numbat)
@@ -407,12 +414,6 @@ function installCommonPackages() {
   $SUDO apt-get update > /dev/null && $SUDO apt-get install --install-recommends winehq-devel -y > /dev/null
   winever="$(wine --version)"
   printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
-
-  ## Tools
-  printf "[${Green}Status${White}] Installing xdotool...\n"
-  $SUDO apt-get install xdotool -y > /dev/null
-  xdotver="$(xdotool --version)"
-  printf "[${Green}Status${White}] Current version: ${Purple}$xdotver${White}.\n"
 
   printf "[${Green}Status${White}] Installing cabextract...\n"
   $SUDO apt-get install cabextract -y > /dev/null
@@ -549,6 +550,10 @@ function checkDependencies() {
 
   if [ "$OS_ID" = "ubuntu" ]; then
     case "$OS_VERSION" in
+      26.04*)
+        Compatible=true
+        installUbuntu2604
+        ;;
       24.04*)
         Compatible=true
         installUbuntu2404
@@ -664,7 +669,7 @@ function launchDude() {
 }
 
 function dudeDownload() {
-  local exe window_id tries wine_pid
+  local exe tries dude_exe wine_status
 
   if ! command -v wget > /dev/null 2>&1; then
     checkRoot
@@ -707,43 +712,37 @@ function dudeDownload() {
     return 1
   fi
 
-  wine "$exe" > /dev/null 2>&1 &
-  wine_pid=$!
+  ## The installer is NSIS, so /S installs it without any window or prompt.
+  ## This also avoids synthetic keyboard input (xdotool), which triggers the
+  ## "Allow Remote Interaction" permission dialog on Wayland (Ubuntu 26.04).
+  printf "[${Green}Status${White}] Installing The Dude Client...\n"
+  wine "$exe" /S > /dev/null 2>&1
+  wine_status=$?
 
-  ## Wait for the installer window. xdotool search prints one ID per line, so
-  ## keep only the first one: passing several IDs made xdotool treat the
-  ## extra ones as commands ("Unknown command: 31457283").
-  printf "Waiting for Wine to initialize... This process is automatic"
-  window_id=""
+  if [ "$wine_status" -ne 0 ]; then
+    printf "[${Yellow}Alert${White}] Wine returned exit code $wine_status.\n"
+  fi
+
+  ## Wait for the executable to appear, in case wine returns early.
   tries=0
-  while [ "$tries" -lt 60 ]; do
-    window_id="$(xdotool search --onlyvisible --name "The Dude Setup" 2>/dev/null | head -n 1)"
-    [ -n "$window_id" ] && break
-
-    ## Stop waiting early if Wine already died (missing file, bad runtime...).
-    if ! kill -0 "$wine_pid" 2>/dev/null; then
-      break
-    fi
-
-    printf "."
+  while [ "$tries" -lt 30 ]; do
+    for dude_exe in \
+      "$HOME/.wine/drive_c/Program Files/Dude/dude.exe" \
+      "$HOME/.wine/drive_c/Program Files (x86)/Dude/dude.exe"; do
+      [ -f "$dude_exe" ] && break 2
+    done
     sleep 2
     tries=$((tries + 1))
   done
-  printf "\n"
 
-  if [ -z "$window_id" ]; then
-    printf "[${Red}Error${White}] The Dude Setup window did not appear.\n"
-    printf "Run ${Cyan}wine $exe${White} manually to see the error.\n\n"
+  if [ -f "$HOME/.wine/drive_c/Program Files/Dude/dude.exe" ] ||
+     [ -f "$HOME/.wine/drive_c/Program Files (x86)/Dude/dude.exe" ]; then
+    printf "[${Green}Status${White}] The Dude Client installed successfully.\n\n"
+  else
+    printf "[${Red}Error${White}] The Dude Client could not be installed.\n"
+    printf "Run ${Cyan}wine $exe /S${White} manually to see the error.\n\n"
     return 1
   fi
-
-  ## Focus the installer window and accept the default options.
-  xdotool windowactivate --sync "$window_id" 2>/dev/null || xdotool windowfocus "$window_id"
-  sleep 5
-  xdotool key --clearmodifiers KP_Enter KP_Enter KP_Enter
-  sleep 1
-  xdotool key --clearmodifiers KP_Enter
-  sleep 5
 
   ## Remove only the downloaded installer, never every .exe in the folder.
   rm -f "$exe"
@@ -765,7 +764,7 @@ function banner() {
        CCCC   LLLLLL  IIIIII  EEEEEE  NN  NN    TT        "
   printf "${Yellow}\n\n A simple installer of The Dude Client for Linux!\n"
   printf "${Green}\n Developed by: danielcshn ( https://github.com/danielcshn )"
-  printf "${Green}\n Version: 1.0 (20261031)\n"
+  printf "${Green}\n Version: 1.1 (20261101)\n"
 }
 
 ##### Display available options #####
@@ -784,6 +783,8 @@ function menu() {
        ;;
     2) printf "\n[${Green}Selected${White}] Option 2 The Dude Client...\n\n"
        dudeDownload
+       printf "\n${White}Press Enter to return to the menu...${White} "
+       read -r
        clear
        banner
        menu
