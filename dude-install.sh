@@ -6,7 +6,7 @@
 # Autor: danielcshn                                                            #
 # URL: https://github.com/danielcshn                                           #
 # ============================================================================ #
-# Version: v1.1 (20261101)                                                     #
+# Version: v1.2 (20261103)                                                     #
 # ============================================================================ #
 # Copyright (c) 2022-2026 danielcshn                                           #
 # ============================================================================ #
@@ -34,6 +34,7 @@ if [ -n "${NO_COLOR:-}" ]; then
 fi
 
 Compatible=false
+InstallFailed=false
 
 ## Run commands directly when the script is already running as root.
 ## This avoids requiring the "sudo" package, which is not installed by
@@ -147,6 +148,124 @@ function checkRoot() {
   exit 1
 }
 
+##### Repair an interrupted dpkg run that blocks every apt operation #####
+function repairPackageManager() {
+  local audit
+
+  ## apt refuses to continue while dpkg is half-configured:
+  ## "E: se interrumpió la ejecución de dpkg..."
+  audit="$($SUDO dpkg --audit 2>/dev/null)"
+  [ -n "$audit" ] || return 0
+
+  printf "[${Yellow}Alert${White}] A previous dpkg run was interrupted. Repairing it...\n"
+
+  if ! $SUDO env DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a \
+       dpkg --configure -a --force-confdef --force-confold; then
+    printf "[${Red}Error${White}] dpkg could not be repaired automatically.\n"
+    printf "Run ${Cyan}sudo dpkg --configure -a${White} manually, then try again.\n\n"
+    return 1
+  fi
+}
+
+##### Run apt without interactive prompts (debconf, needrestart, dpkg) #####
+function aptUpdate() {
+  repairPackageManager || return 1
+
+  if ! $SUDO env DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a apt-get update; then
+    printf "[${Red}Error${White}] apt-get update failed. Check your network and APT repositories.\n\n"
+    return 1
+  fi
+}
+
+function aptInstall() {
+  $SUDO env DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a \
+    apt-get install -y \
+    -o Dpkg::Options::=--force-confdef \
+    -o Dpkg::Options::=--force-confold "$@"
+}
+
+##### Install a small tool with whichever package manager exists #####
+function installPackage() {
+  local package="$1"
+
+  if command -v apt-get > /dev/null 2>&1; then
+    aptUpdate && aptInstall "$package"
+  elif command -v dnf > /dev/null 2>&1; then
+    $SUDO dnf install -y "$package"
+  else
+    printf "[${Red}Error${White}] No supported package manager found (apt or dnf).\n\n"
+    return 1
+  fi
+}
+
+function installWget() {
+  checkRoot
+  printf "[${Green}Status${White}] Installing wget...\n"
+  installPackage wget
+}
+
+function installCabextract() {
+  checkRoot
+  printf "[${Green}Status${White}] Installing cabextract...\n"
+  installPackage cabextract
+}
+
+##### Install Wine & Tools on Fedora (uses Fedora's Wine 11.x) #####
+function installFedora() {
+  checkRoot
+
+  printf "[${Green}Status${White}] Installing wine and dependencies...\n\n"
+
+  if ! command -v wget > /dev/null 2>&1; then
+    installWget || {
+      InstallFailed=true
+      return 1
+    }
+  fi
+
+  printf "[${Green}Status${White}] Installing wine, winetricks and cabextract...\n"
+
+  if ! $SUDO dnf install -y wine winetricks cabextract; then
+    printf "[${Red}Error${White}] wine could not be installed.\n\n"
+    InstallFailed=true
+    return 1
+  fi
+
+  winever="$(wine --version)"
+  printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
+
+  witrver="$(winetricks --version)"
+  printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
+
+  installDotnet
+
+  printf "[${Green}Status${White}] Installing successful. Select option 2 to install The Dude Client.\n\n"
+}
+
+##### Support Install Zorin OS 18 (noble) < Ubuntu 24.04 base
+function installZorinOS18() {
+  osversion="$OS_PRETTY"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if ! command -v winetricks > /dev/null 2>&1; then
+    installWineAndTools "24.04" "noble"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
+##### Support Install Zorin OS 17 (jammy) < Ubuntu 22.04 base
+function installZorinOS17() {
+  osversion="$OS_PRETTY"
+  printf "[${Green}Status${White}] $osversion... compatible.\n\n"
+
+  if ! command -v winetricks > /dev/null 2>&1; then
+    installWineAndTools "22.04" "jammy"
+  else
+    printf "[${Green}Status${White}] All dependencies are installed.\n\n"
+  fi
+}
+
 ##### Support Install Zorin OS 16 (focal) < TESTED OK
 function installZorinOS16() {
   osversion="$OS_PRETTY"
@@ -242,8 +361,9 @@ function installWineAndTools() {
 
   ## wget may not be present on minimal installations.
   if ! command -v wget > /dev/null 2>&1; then
-    $SUDO apt-get update > /dev/null
-    $SUDO apt-get install wget -y > /dev/null
+    printf "[${Green}Status${White}] Installing wget...\n"
+    aptUpdate
+    aptInstall wget
   fi
 
   file1=/etc/apt/keyrings/winehq-archive.key
@@ -258,15 +378,26 @@ function installWineAndTools() {
   fi
 
   printf "[${Green}Status${White}] Installing WineHQ (Devel)...\n"
-  $SUDO apt-get update > /dev/null && $SUDO apt-get install --install-recommends winehq-devel -y > /dev/null
+
+  if ! aptUpdate; then
+    InstallFailed=true
+    return 1
+  fi
+
+  if ! aptInstall --install-recommends winehq-devel; then
+    printf "[${Red}Error${White}] winehq-devel could not be installed.\n\n"
+    InstallFailed=true
+    return 1
+  fi
+
   winever="$(wine --version)"
   printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
 
   printf "[${Green}Status${White}] Installing cabextract...\n"
-  $SUDO apt-get install cabextract -y > /dev/null
+  aptInstall cabextract
 
   printf "[${Green}Status${White}] Installing winetricks...\n"
-  $SUDO apt-get install winetricks -y > /dev/null
+  aptInstall winetricks
   witrver="$(winetricks --version)"
   printf "[${Green}Status${White}] Current version: ${Purple}winetricks $witrver${White}.\n"
 
@@ -395,8 +526,8 @@ function installCommonPackages() {
   ## It is not guaranteed to be present on minimal installations.
   if ! command -v wget > /dev/null 2>&1; then
     printf "[${Green}Status${White}] Installing wget...\n"
-    $SUDO apt-get update > /dev/null
-    $SUDO apt-get install wget -y > /dev/null
+    aptUpdate
+    aptInstall wget
   fi
 
   file1=/etc/apt/keyrings/winehq-archive.key
@@ -411,12 +542,23 @@ function installCommonPackages() {
   fi
 
   printf "[${Green}Status${White}] Installing WineHQ (Developed)...\n"
-  $SUDO apt-get update > /dev/null && $SUDO apt-get install --install-recommends winehq-devel -y > /dev/null
+
+  if ! aptUpdate; then
+    InstallFailed=true
+    return 1
+  fi
+
+  if ! aptInstall --install-recommends winehq-devel; then
+    printf "[${Red}Error${White}] winehq-devel could not be installed.\n\n"
+    InstallFailed=true
+    return 1
+  fi
+
   winever="$(wine --version)"
   printf "[${Green}Status${White}] Current version: ${Purple}$winever${White}...\n"
 
   printf "[${Green}Status${White}] Installing cabextract...\n"
-  $SUDO apt-get install cabextract -y > /dev/null
+  aptInstall cabextract
 
   printf "[${Green}Status${White}] Installing winetricks...\n"
 
@@ -546,6 +688,20 @@ function checkDependencies() {
     esac
   fi
 
+  ## Fedora Linux
+
+  if [ "$OS_ID" = "fedora" ]; then
+    case "$OS_VERSION" in
+      43*|44*|45*)
+        Compatible=true
+        installFedora
+        ;;
+      *)
+        Compatible=false
+        ;;
+    esac
+  fi
+
   ## Ubuntu
 
   if [ "$OS_ID" = "ubuntu" ]; then
@@ -634,6 +790,14 @@ function checkDependencies() {
 
   if [ "$OS_ID" = "zorin" ]; then
     case "$OS_VERSION" in
+      18*)
+        Compatible=true
+        installZorinOS18
+        ;;
+      17*)
+        Compatible=true
+        installZorinOS17
+        ;;
       16*)
         Compatible=true
         installZorinOS16
@@ -644,12 +808,14 @@ function checkDependencies() {
     esac
   fi
 
+  ## Stop here if the Wine installation already failed (e.g. interrupted dpkg).
+  if $InstallFailed; then
+    return 1
+  fi
+
   ## winetricks needs cabextract for several installers, including dotnet45.
   if $Compatible && ! command -v cabextract > /dev/null 2>&1; then
-    checkRoot
-    printf "[${Green}Status${White}] Installing cabextract...\n"
-    $SUDO apt-get update > /dev/null
-    $SUDO apt-get install cabextract -y > /dev/null
+    installCabextract || return 1
   fi
 
   osversion="$OS_PRETTY"
@@ -672,9 +838,7 @@ function dudeDownload() {
   local exe tries dude_exe wine_status
 
   if ! command -v wget > /dev/null 2>&1; then
-    checkRoot
-    printf "[${Green}Status${White}] Installing wget...\n"
-    $SUDO apt-get update > /dev/null && $SUDO apt-get install wget -y > /dev/null
+    installWget || return 1
   fi
 
   printf "${White}┌─[${Green}DudeInstaller${White}] Please indicate the version of The Dude Client\n"
@@ -764,7 +928,7 @@ function banner() {
        CCCC   LLLLLL  IIIIII  EEEEEE  NN  NN    TT        "
   printf "${Yellow}\n\n A simple installer of The Dude Client for Linux!\n"
   printf "${Green}\n Developed by: danielcshn ( https://github.com/danielcshn )"
-  printf "${Green}\n Version: 1.1 (20261101)\n"
+  printf "${Green}\n Version: 1.4 (20261103)\n"
 }
 
 ##### Display available options #####

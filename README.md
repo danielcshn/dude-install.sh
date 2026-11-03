@@ -1,7 +1,7 @@
 <div align="center">
   <h3 style="font-size: xx-large;"> dude-install.sh </h3>
   <hr>
-  <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Debian, Ubuntu, Linux Lite, Linux Mint & LMDE.</p>
+  <p>The main purpose of this tool is to automate the installation of The Dude Client in Linux.<br>Current support for Debian, Ubuntu, Fedora, Linux Lite, Linux Mint & LMDE.</p>
   <hr>
 </div>
 
@@ -25,29 +25,38 @@
 
 - Debian 13 (Trixie)
 - Debian 12 (Bookworm)
-- Debian 11 (Bullseye)
 - LMDE 7 (Gigi)
-- LMDE 6 (Faye)
+- Fedora 45
+- Fedora 44
+- Fedora 43
 - Ubuntu 26.04 (Resolute Raccoon)
 - Ubuntu 24.04 (Noble Numbat)
 - Ubuntu 23.10 (Mantic Minotaur)
 - Ubuntu 23.04 (Lunar Lobster)
 - Ubuntu 22.04 (Jammy Jellyfish)
-- Ubuntu 21.10 (Impish Indri)
-- Ubuntu 20.04 (Focal Fossa)
-- Linux Lite 6.X (Based on Ubuntu 22.04.3)
+- Linux Lite 8 (Based on Ubuntu 26.04)
+- Linux Lite 7 (Based on Ubuntu 24.04)
+- Linux Lite 6 (Based on Ubuntu 22.04)
 - Linux Mint 22 (Wilma)
 - Linux Mint 21 (Vanessa)
-- Linux Mint 20 (Ulyana)
-- Linux Mint 19 (Tara)
-- Zorin OS 16.1 (Focal)
+- Zorin OS 18.1 / 18 (Ubuntu 24.04 base)
+- Zorin OS 17 (Ubuntu 22.04 base)
 
 > The distribution is detected from `/etc/os-release`, so `lsb-release` is no longer required. This is important on Debian 13 and LMDE 7, where it is not installed by default.
 
+> On Fedora the script installs the distribution's Wine package (11.x) with `dnf`, plus `winetricks` and `cabextract`. WineHQ repositories are only used on Debian and Ubuntu.
+
 ## ✅ Support EOL
 
+- Debian 11 (Bullseye)
 - Debian 10 (Buster)
+- LMDE 6 (Faye)
+- Ubuntu 21.10 (Impish Indri)
+- Ubuntu 20.04 (Focal Fossa)
 - Ubuntu 18.04 (Bionic Beaver)
+- Linux Mint 20 (Ulyana)
+- Linux Mint 19 (Tara)
+- Zorin OS 16.1 (Focal)
 
 `EOL - End-of-Life:` No security updates, no script support.
 
@@ -55,6 +64,15 @@
 + **For Linux :**
 ```
 sudo apt install git
+git clone https://github.com/danielcshn/dude-install.sh.git
+cd dude-install.sh
+chmod +x dude-install.sh
+./dude-install.sh
+```
+
++ **For Fedora :**
+```
+sudo dnf install git
 git clone https://github.com/danielcshn/dude-install.sh.git
 cd dude-install.sh
 chmod +x dude-install.sh
@@ -104,6 +122,8 @@ chmod +x dude-install.sh
 
 > If your terminal uses a light theme and some text is hard to read, run `NO_COLOR=1 ./dude-install.sh` to disable colours.
 
+> If a previous APT run was interrupted, the script detects it and repairs it with `dpkg --configure -a` before installing anything. If the repair fails, it shows the exact command to run manually.
+
 <p align="center">
   <img src="https://img.shields.io/badge/%E2%9A%A0%20WARNING:%20This%20Script%20comes%20with%20ABSOLUTELY%20NO%20WARRANTY!%20-red?style=for-the-badge" title="Warning">
 </p>
@@ -112,7 +132,21 @@ chmod +x dude-install.sh
 
 <div align="center">
 
-[![Debian 13](https://img.shields.io/badge/Debian%2013-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/) [![Debian 12](https://img.shields.io/badge/Debian%2012-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/) [![Debian 11](https://img.shields.io/badge/Debian%2011-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/) [![Ubuntu 26.04](https://img.shields.io/badge/Ubuntu%2026.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu%2022.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Ubuntu 20.04](https://img.shields.io/badge/Ubuntu%2020.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Ubuntu 18.04.6](https://img.shields.io/badge/Ubuntu%2018.04.6-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/) [![Linux Lite 6.0 (Ubuntu 22.04 LTD)](https://img.shields.io/badge/Linux%20Lite%206.0-%E2%9C%85-blue?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAABACAYAAADrnQxhAAAAAXNSR0IArs4c6QAAA2ZJREFUWEfdmE1o1FAQx/+TbbXJUizVVovibouXIr2JJxG9elQU736cvBTEg2ho4xeC4EUPghSvguDRs4gHr6IiSOmuSIWt1R7KRts1I4mb7dtsXjKb/RDca2bf781//m8yL4Qu/bjkvAOwh4r2Lt2S1A0WlxwO16GirV2zI5gKUTetA2aC6SAK8DkV7ZNR1dqGCUABIy47MUwKSZIzFcblGzUw5zIZyTDO0v5rTxvm0S3Cn26PYbBWyQRR/qTKGZtZFsmSNhUCO4a5Y7MwV+4nC1DzdtOBuUrHMKnMfnZ9gwXHIbozLs8vgmlKsmN37BLMlQeS0L9nrwWm9Lm0VdzxyzAr99LCwucLHcFgbAO8DREstmZi29MAwDURKGxfmTNrU8IfVLRHm2C8NP8GRIcl220HFnuoxRICcMdnYVZSDnN91x3BvMEJGJtfJQL4MUxF22ixvjSzLBL+OxiXnFUAoxJtOs5MKqG/GSksOho0rC+FSUFxc8j/AdNOV1xyvLg3QJxZpDImwRrjc5ob+wb7NXIGgIfta8+S90R0mgrXW4ICg3TbiYmzft9gvOjMIIe3abUSH2YPr2nKPhK3XijjGoAdaUCJOUT3M4mUXYNJjCKAValo53UKkZ+RmrouQ86N4OfO84mjW5KEQa+Muw/HAf0zxoaFoe9PtKVNhcXJ5/8pCvQlHPr2EOS53YVl6YlpWTXGgn44cQtWvmmDvfmkcyZwYvD3rpwzKSwJKH5TtwPTAXsGS5xButRBmsquna4kMHHnZ7yiSfto1HDNtxjBrXNz+Bhq5iFt2xK5sZ7ZBwDTkleNH9NyxWWsgDAEIqvpqxDhMRXsCx1dBo2NUtI8shr90JkZpqufWEapSVSZW84fD0zT5NWP2rEg+kDTKxfA9BnEc83+ziH4pNT6iWKBivY5NTb1E2AYzCXHnwNPad4IXwDssyxrq0ksOY9AuAjCOhXs4UYjTnMfl5xlABNhXFiXugLBNbZarfpTNVuWFVxpxTKqgYqky1S090afqYbwgcx8Ip/Pv2gbFlw4CDNUsN+31LXs3MG6d4sOzq2rz3ygKmemmsWZSGdzHVBskLS6NsnLbLiu+zuaYU9gPrhard4FcEUF9gxWB3pEdNw0zZdi67cjYTRWrV9PMwvBIbAvsLqk/Ac3JuDvT1hXxQAAAABJRU5ErkJggg==)](https://linuxliteos.com/) [![LMDE 7](https://img.shields.io/badge/LMDE%207-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Linux Mint 21](https://img.shields.io/badge/Linux%20Mint%2021-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Linux Mint 20](https://img.shields.io/badge/Linux%20Mint%2020-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Linux Mint 19](https://img.shields.io/badge/Linux%20Mint%2019-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/) [![Zorin OS 16](https://img.shields.io/badge/Zorin%20OS%2016-%E2%9C%85-blue?style=for-the-badge&logo=zorin)](https://zorin.com/os/)
+[![Debian 13](https://img.shields.io/badge/Debian%2013-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/)
+[![Debian 12](https://img.shields.io/badge/Debian%2012-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/)
+[![Debian 11](https://img.shields.io/badge/Debian%2011-%E2%9C%85-blue?style=for-the-badge&logo=debian)](https://debian.org/)
+[![Ubuntu 26.04](https://img.shields.io/badge/Ubuntu%2026.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/)
+[![Ubuntu 24.04](https://img.shields.io/badge/Ubuntu%2024.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/)
+[![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu%2022.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/)
+[![Ubuntu 20.04](https://img.shields.io/badge/Ubuntu%2020.04-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/)
+[![Ubuntu 18.04.6](https://img.shields.io/badge/Ubuntu%2018.04.6-%E2%9C%85-blue?style=for-the-badge&logo=ubuntu)](https://ubuntu.com/)
+[![Fedora 45](https://img.shields.io/badge/Fedora%2045-%E2%9C%85-blue?style=for-the-badge&logo=fedora)](https://fedoraproject.org/)
+[![Linux Lite 6.0 (Ubuntu 22.04 LTD)](https://img.shields.io/badge/Linux%20Lite%206.0-%E2%9C%85-blue?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAABACAYAAADrnQxhAAAAAXNSR0IArs4c6QAAA2ZJREFUWEfdmE1o1FAQx/+TbbXJUizVVovibouXIr2JJxG9elQU736cvBTEg2ho4xeC4EUPghSvguDRs4gHr6IiSOmuSIWt1R7KRts1I4mb7dtsXjKb/RDca2bf781//m8yL4Qu/bjkvAOwh4r2Lt2S1A0WlxwO16GirV2zI5gKUTetA2aC6SAK8DkV7ZNR1dqGCUABIy47MUwKSZIzFcblGzUw5zIZyTDO0v5rTxvm0S3Cn26PYbBWyQRR/qTKGZtZFsmSNhUCO4a5Y7MwV+4nC1DzdtOBuUrHMKnMfnZ9gwXHIbozLs8vgmlKsmN37BLMlQeS0L9nrwWm9Lm0VdzxyzAr99LCwucLHcFgbAO8DREstmZi29MAwDURKGxfmTNrU8IfVLRHm2C8NP8GRIcl220HFnuoxRICcMdnYVZSDnN91x3BvMEJGJtfJQL4MUxF22ixvjSzLBL+OxiXnFUAoxJtOs5MKqG/GSksOho0rC+FSUFxc8j/AdNOV1xyvLg3QJxZpDImwRrjc5ob+wb7NXIGgIfta8+S90R0mgrXW4ICg3TbiYmzft9gvOjMIIe3abUSH2YPr2nKPhK3XijjGoAdaUCJOUT3M4mUXYNJjCKAValo53UKkZ+RmrouQ86N4OfO84mjW5KEQa+Muw/HAf0zxoaFoe9PtKVNhcXJ5/8pCvQlHPr2EOS53YVl6YlpWTXGgn44cQtWvmmDvfmkcyZwYvD3rpwzKSwJKH5TtwPTAXsGS5xButRBmsquna4kMHHnZ7yiSfto1HDNtxjBrXNz+Bhq5iFt2xK5sZ7ZBwDTkleNH9NyxWWsgDAEIqvpqxDhMRXsCx1dBo2NUtI8shr90JkZpqufWEapSVSZW84fD0zT5NWP2rEg+kDTKxfA9BnEc83+ziH4pNT6iWKBivY5NTb1E2AYzCXHnwNPad4IXwDssyxrq0ksOY9AuAjCOhXs4UYjTnMfl5xlABNhXFiXugLBNbZarfpTNVuWFVxpxTKqgYqky1S090afqYbwgcx8Ip/Pv2gbFlw4CDNUsN+31LXs3MG6d4sOzq2rz3ygKmemmsWZSGdzHVBskLS6NsnLbLiu+zuaYU9gPrhard4FcEUF9gxWB3pEdNw0zZdi67cjYTRWrV9PMwvBIbAvsLqk/Ac3JuDvT1hXxQAAAABJRU5ErkJggg==)](https://linuxliteos.com/)
+[![LMDE 7](https://img.shields.io/badge/LMDE%207-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/)
+[![Linux Mint 21](https://img.shields.io/badge/Linux%20Mint%2021-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/)
+[![Linux Mint 20](https://img.shields.io/badge/Linux%20Mint%2020-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/)
+[![Linux Mint 19](https://img.shields.io/badge/Linux%20Mint%2019-%E2%9C%85-blue?style=for-the-badge&logo=linuxmint)](https://linuxmint.com/)
+[![Zorin OS 16](https://img.shields.io/badge/Zorin%20OS%2016-%E2%9C%85-blue?style=for-the-badge&logo=zorin)](https://zorin.com/os/)
 
 </div>
 
